@@ -1,0 +1,37 @@
+{
+  "name": "@c5vargas/vue-gsap",
+  "version": "0.1.0",
+  "description": "Composable Vue 3 para usar GSAP con contexto (inspirado en @gsap/react)",
+  "main": "dist/vue-gsap.cjs.js",
+  "module": "dist/vue-gsap.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",     
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "vue3",
+    "gsap",
+    "composable",
+    "animation"
+  ],
+  "author": "Carles Vargas",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/c5vargas/vue-gsap.git"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.0",
+    "gsap": "^3.12.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vue": "^3.4.0"
+  }
+}

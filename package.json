@@ -1,6 +1,6 @@
 {
   "name": "gsap-vue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Composable Vue 3 para usar GSAP con contexto (inspirado en @gsap/react)",
   "main": "dist/gsap-vue.cjs.js",
   "module": "dist/gsap-vue.es.js",
@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "dev": "vite",     
+    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },

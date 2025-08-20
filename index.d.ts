@@ -1,18 +1,20 @@
-import { Ref } from 'vue';
-import gsap from 'gsap';
+import { Ref } from "vue";
+import gsap from "gsap";
 
 export interface UseGSAPContext {
-  context: any;
-  contextSafe: (func: (...args: any[]) => any) => void;
+  context: gsap.Context;
+  contextSafe: (func: () => void) => void;
+}
+
+export interface UseGSAPConfig {
+  scope?: HTMLElement | string | Ref<HTMLElement | null>;
+  dependencies?: unknown[];
+  revertOnUpdate?: boolean;
 }
 
 export function useGSAP(
-  callback?: (...args: any[]) => any,
-  config?: {
-    scope?: Element | string | object | Ref<Element | null>;
-    dependencies?: any[];
-    revertOnUpdate?: boolean;
-  }
+  callback?: () => void,
+  config?: UseGSAPConfig | unknown[]
 ): UseGSAPContext;
 
 export namespace useGSAP {

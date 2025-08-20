@@ -13,7 +13,7 @@ export interface UseGSAPConfig {
 }
 
 export function useGSAP(
-  callback?: () => void,
+  callback?: (ctx: gsap.Context) => void,
   config?: UseGSAPConfig | unknown[]
 ): UseGSAPContext;
 

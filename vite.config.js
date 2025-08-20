@@ -8,7 +8,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.js"),
       name: "VueGSAP",
-      fileName: (format) => `vue-gsap.${format}.js`
+      fileName: (format) => `gsap-vue.${format}.js`
     },
     rollupOptions: {
       external: ["vue", "gsap"],

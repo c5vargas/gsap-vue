@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useGSAP } from "../useGSAP.js";
+import { useGSAP } from "../index.js";
 import gsap from "gsap";
 
 const box = ref(null);

@@ -60,7 +60,7 @@ useGSAP(() => {
 
 ## Examples
 
-### Without `useGSAP` (manual)
+### ❌ Without `useGSAP` (manual)
 
 ```vue
 <script setup lang="ts">
@@ -84,7 +84,7 @@ onBeforeUnmount(() => ctx?.revert());
 </template>
 ```
 
-### With `useGSAP` (simplified)
+### ✅ With `useGSAP` (simplified)
 
 ```vue
 <script setup lang="ts">

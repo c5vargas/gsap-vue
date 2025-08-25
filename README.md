@@ -73,7 +73,7 @@ let ctx: gsap.Context | null = null;
 onMounted(() => {
   ctx = gsap.context(() => {
     gsap.to(box.value, { rotation: 360, duration: 2 });
-  }, box);
+  }, box.value);
 });
 
 onBeforeUnmount(() => ctx?.revert());
@@ -118,10 +118,14 @@ const endX = ref(200);
 useGSAP(() => {
   gsap.to(box.value, { x: endX.value, duration: 1 });
 }, { dependencies: [endX], scope: box });
+
+const moveFurther = () => {
+  endX.value += 100;
+};
 </script>
 
 <template>
-  <button @click="endX += 100">Move Further</button>
+  <button @click="moveFurther">Move Further</button>
   <div ref="box" class="box"></div>
 </template>
 ```

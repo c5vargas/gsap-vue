@@ -1,5 +1,5 @@
 <template>
-  <div class="demo-container">
+  <div ref="containerRef" class="demo-container">
     <h1>Vue GSAP Composable Demo</h1>
     <p>Ejemplo de uso del composable <code>useGSAP</code> con animaciones sencillas.</p>
 
@@ -18,37 +18,37 @@ import { useGSAP } from "../index.js";
 import gsap from "gsap";
 
 const box = ref(null);
+const containerRef = ref(null)
 
-// Creamos la animación dentro del contexto GSAP
-const { context, contextSafe } = useGSAP(() => {
-  contextSafe(() => {
-    gsap.to(box.value, {
-      x: 300,
-      rotation: 360,
-      backgroundColor: "#ff4f4f",
-      duration: 2,
-      ease: "power2.inOut"
-    });
+const { contextSafe } = useGSAP(() => {
+  gsap.to(box.value, {
+    x: 300,
+    rotation: 360,
+    backgroundColor: "#ff4f4f",
+    duration: 2,
+    ease: "power2.inOut"
   });
-}, []);
+}, { scope: containerRef });
 
-// Funciones para controlar la animación
-const playAnimation = () => {
-  context.revert(); // resetea
-  contextSafe(() => {
-    gsap.to(box.value, {
-      x: 300,
-      rotation: 360,
-      backgroundColor: "#ff4f4f",
-      duration: 2,
-      ease: "power2.inOut"
-    });
+const playAnimation = contextSafe(() => {  
+  gsap.to(box.value, {
+    x: 300,
+    rotation: 360,
+    backgroundColor: "#ff4f4f",
+    duration: 2,
+    ease: "power2.inOut"
   });
-};
+});
 
-const revertAnimation = () => {
-  context.revert();
-};
+const revertAnimation = contextSafe(() => {
+  gsap.to(box.value, {
+    x: 0,
+    rotation: 0,
+    backgroundColor: "#4f46e5",
+    duration: 1.5,
+    ease: "power2.inOut"
+  });
+});
 </script>
 
 <style>

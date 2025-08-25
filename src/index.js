@@ -46,15 +46,16 @@ export function useGSAP(callbackOrConfig, depsOrConfig) {
   }
 
   const { revertOnUpdate } = config;
-  const scope = normalizeScope(config.scope);
+  let scope = normalizeScope(config.scope);
 
   const mounted = ref(false);
   const context = ref(_gsap.context(() => {}, scope));
 
-  const contextSafe = (func) => context.value.add(func);
+const contextSafe = (func) => (...args) => context.value.add(() => func(...args));
   const deferCleanup = dependencies.length > 0 && !revertOnUpdate;
 
   onMounted(() => {
+    scope = normalizeScope(config.scope);
     mounted.value = true;
     if (callback) {
       context.value.add(callback, scope);
@@ -67,11 +68,11 @@ export function useGSAP(callbackOrConfig, depsOrConfig) {
     watch(
       dependencies,
       () => {
-        if (callback) {
-          context.value.add(callback, scope);
-        }
         if (!deferCleanup || !mounted.value) {
           context.value.revert();
+        }
+        if (callback) {
+          context.value.add(callback, scope);
         }
       },
       { immediate: true }

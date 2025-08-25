@@ -50,17 +50,27 @@ export function useGSAP(callbackOrConfig, depsOrConfig) {
 
   const safeRevert = () => {
     if (!context.value) return;
+
     try {
-      // Matar todos los ScrollTriggers dentro del contexto
-      if (context.value.timeline) {
-        context.value.timeline.getChildren(false, true, true).forEach((child) => {
-          child.scrollTrigger?.kill();
+      const timelines = context.value.timeline?.getChildren(false, true, true) || [];
+      timelines.forEach((child) => {
+        if (child.scrollTrigger) {
+          child.scrollTrigger.kill();
+          child.scrollTrigger = null;
+        }
+        if (child.kill) {
           child.kill();
-        });
+        }
+      });
+
+      if (context.value.revert) {
+        context.value.revert();
       }
-      context.value.revert();
+
     } catch (e) {
-      console.warn("useGSAP: error during safeRevert()", e);
+      if (config.debug) {
+        console.warn("useGSAP: error during safeRevert()", e);
+      }
     }
   };
 

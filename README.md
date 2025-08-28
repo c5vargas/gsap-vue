@@ -2,6 +2,7 @@
 
 ![GSAP Vue Banner](./assets/og-image.webp)
 
+![NPM Downloads](https://img.shields.io/npm/d18m/gsap-vue?style=flat&label=Downloads)
 [![npm version](https://img.shields.io/npm/v/gsap-vue)](https://www.npmjs.com/package/gsap-vue)
 [![Vue 3](https://img.shields.io/badge/Vue-3.x-brightgreen)](https://vuejs.org/)
 [![GSAP](https://img.shields.io/badge/GSAP-3.x-blue)](https://greensock.com/gsap/)

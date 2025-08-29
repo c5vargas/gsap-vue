@@ -41,32 +41,29 @@ export function useGSAP(callbackOrConfig, depsOrConfig) {
   }
 
   const scopeRef = ref(normalizeScope(config.scope));
+  const context = ref(null);
   const mounted = ref(false);
-  const context = ref(_gsap.context(() => {}, scopeRef.value));
 
-  const contextSafe = (func) => (...args) => context.value.add(() => func(...args));
+  const createContext = () => {
+    safeRevert(); // mata cualquier contexto previo
+    context.value = _gsap.context(() => {}, scopeRef.value);
+    if (callback) {
+      context.value.add(() => {
+        if (scopeRef.value) callback();
+      }, scopeRef.value);
+    }
+  };
 
-  const deferCleanup = dependencies.length > 0 && !config.revertOnUpdate;
+  const contextSafe = (func) => (...args) =>
+    context.value?.add(() => func(...args));
 
   const safeRevert = () => {
     if (!context.value) return;
-
     try {
-      const timelines = context.value.timeline?.getChildren(false, true, true) || [];
-      timelines.forEach((child) => {
-        if (child.scrollTrigger) {
-          child.scrollTrigger.kill();
-          child.scrollTrigger = null;
-        }
-        if (child.kill) {
-          child.kill();
-        }
-      });
-
-      if (context.value.revert) {
-        context.value.revert();
-      }
-
+      // limpia timelines + ScrollTriggers
+      context.value.kill?.();
+      context.value.revert?.();
+      context.value = null;
     } catch (e) {
       if (config.debug) {
         console.warn("useGSAP: error during safeRevert()", e);
@@ -77,12 +74,7 @@ export function useGSAP(callbackOrConfig, depsOrConfig) {
   onMounted(() => {
     scopeRef.value = normalizeScope(config.scope);
     mounted.value = true;
-
-    if (callback) {
-      context.value.add(() => {
-        if (scopeRef.value) callback();
-      }, scopeRef.value);
-    }
+    createContext();
   });
 
   onBeforeUnmount(() => safeRevert());
@@ -91,14 +83,14 @@ export function useGSAP(callbackOrConfig, depsOrConfig) {
     watch(
       dependencies,
       () => {
-        if (!deferCleanup || !mounted.value) safeRevert();
-        if (callback) context.value.add(() => callback(), scopeRef.value);
+        if (!mounted.value) return;
+        createContext();
       },
       { immediate: true }
     );
   }
 
-  return { context: context.value, contextSafe };
+  return { context, contextSafe };
 }
 
 useGSAP.register = (core) => {
